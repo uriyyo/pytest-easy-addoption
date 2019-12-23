@@ -1,0 +1,1 @@
+# pytest-easy-addoption
