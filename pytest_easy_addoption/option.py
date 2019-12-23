@@ -1,6 +1,6 @@
 from typing import Any, Generic, Mapping, Optional, Type, Union
 
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, MISSING
 
 from .types import C, MappingStrAny, OptionType, T
 
@@ -38,7 +38,7 @@ class BaseOption(Generic[T]):
 class Option(BaseOption[T]):
     def __init__(
         self,
-        default: Optional[T] = None,
+        default: Optional[T] = MISSING,
         *,
         name: Optional[str] = None,
         short_name: Optional[str] = None,
@@ -46,7 +46,7 @@ class Option(BaseOption[T]):
         dest: Optional[str] = None,
         help: Optional[str] = None,
         type: OptionType = None,
-        required: bool = True,
+        required: bool = MISSING,
         prefix: Optional[str] = None,
         use_prefix: bool = True,
         **kwargs: Any,
@@ -96,16 +96,24 @@ class Option(BaseOption[T]):
         return config.getoption(self.dest)
 
     def register(self, group):
+        # FIXME: Looks ugly, create one place to configure AddOptions
         fields = {
             key: getattr(self, key)
             for key in ("default", "dest", "help", "type", "required")
         }
 
+        if fields["default"] is not MISSING and fields["required"] is MISSING:
+            fields["required"] = False
+
         group.addoption(
             *((self.short_name,) if self.short_name else ()),
             self.name,
             action=self.action or TYPE_TO_ACTION.get(self.type, "store"),
-            **{key: value for key, value in fields.items() if value is not None},
+            **{
+                key: value
+                for key, value in fields.items()
+                if value not in (None, MISSING)
+            },
             **self.kwargs,
         )
 

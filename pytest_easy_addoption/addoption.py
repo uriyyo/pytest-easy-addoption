@@ -1,7 +1,7 @@
 from collections import ChainMap
 from typing import Any, Dict, Mapping, Optional, Tuple, Type, Set, ClassVar
 
-from dataclasses import dataclass, field, fields, InitVar
+from dataclasses import dataclass, field, fields, InitVar, MISSING
 
 from .option import Option
 
@@ -23,17 +23,13 @@ class AddOptionMeta(type):
                         name=attr,
                         annotation=annotation,
                         prefix=prefix,
-                        value=namespace.get(attr),
+                        value=namespace.get(attr, MISSING),
                     ),
                     init=False,
                 )
 
         cls = super().__new__(mcs, name, bases, namespace)
-
-        if "__dataclass_params__" not in cls.__dict__:
-            cls = dataclass(cls)
-
-        return cls
+        return dataclass(cls)
 
 
 @dataclass
