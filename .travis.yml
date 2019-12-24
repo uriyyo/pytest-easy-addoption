@@ -5,7 +5,7 @@ install:
 
 env:
   - TEST_CMD="pytest tests"
-  - SRC_DIR="pytest_easy_addoption"
+    SRC_DIR="pytest_easy_addoption"
 
 script:
   - $TEST_CMD

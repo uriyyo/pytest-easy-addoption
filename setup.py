@@ -34,7 +34,7 @@ setup(
     long_description=README.read_text(),
     license="MIT",
     packages=find_packages(exclude=("tests*",)),
-    install_requires=["dataclasses>=0.7", "pytest>=5.0"],
+    install_requires=["dataclasses>=0.6", "pytest>=5.0"],
     extras_require={
         "test": test_requirements,
         "lint": lint_requirements,
