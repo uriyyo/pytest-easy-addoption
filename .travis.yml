@@ -12,15 +12,15 @@ script:
 
 matrix:
   include:
-    - name: "flake8"
-      python: 3.6
-      env:
-        - TEST_CMD="flake8 $SRC_DIR"
+#    - name: "flake8"
+#      python: 3.6
+#      env:
+#        - TEST_CMD="flake8 $SRC_DIR"
 
-    - name: "mypy"
-      python: "3.6"
-      env:
-        - TEST_CMD="mypy $SRC_DIR"
+#    - name: "mypy"
+#      python: "3.6"
+#      env:
+#        - TEST_CMD="mypy $SRC_DIR"
 
     - name: "codecov"
       python: "3.6"
