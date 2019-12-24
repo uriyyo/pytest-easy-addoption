@@ -1,9 +1,12 @@
-from typing import Any, Callable, Mapping, Optional, Type, Union, TypeVar
+from typing import Any, Callable, Mapping, Optional, Type, TypeVar, Union
+
+from .missing import Missing
 
 T = TypeVar("T")
 C = TypeVar("C")
 
 MappingStrAny = Mapping[str, Any]
-OptionType = Optional[Union[Type, str, Callable]]
+TypeOption = Optional[Union[Type, str, Callable, Missing]]
+StrOption = Optional[Union[str, Missing]]
 
-__all__ = ["T", "C", "MappingStrAny", "OptionType"]
+__all__ = ["T", "C", "MappingStrAny", "TypeOption", "StrOption"]

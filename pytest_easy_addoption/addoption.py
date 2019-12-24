@@ -1,8 +1,8 @@
 from collections import ChainMap
-from typing import Any, Dict, Mapping, Optional, Tuple, Type, Set, ClassVar
+from dataclasses import InitVar, dataclass, field, fields
+from typing import Any, ClassVar, Dict, Mapping, Optional, Set, Tuple, Type
 
-from dataclasses import dataclass, field, fields, InitVar, MISSING
-
+from .missing import MISSING
 from .option import Option
 
 SKIP_FIELDS: Set[str] = {"prefix", "config"}
