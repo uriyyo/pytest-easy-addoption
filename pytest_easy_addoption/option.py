@@ -5,13 +5,13 @@ from .missing import MISSING, Missing
 from .types import C, MappingStrAny, StrOption, T, TypeOption
 
 
-def _default_name(name: str, prefix: Optional[str] = None) -> str:
-    prefix = "--" if prefix is None else f"--{prefix}-"
+def _to_option_name(name: str, prefix: Optional[str]) -> str:
+    prefix = "--" if prefix is None else f"--{prefix.replace('_', '-')}-"
 
     return f"{prefix}{name}".replace("_", "-")
 
 
-def _default_dest(name: str, prefix: Optional[str] = None) -> str:
+def _to_option_dest(name: str, prefix: Optional[str] = None) -> str:
     prefix = f"{prefix}_" if prefix is not None else ""
 
     return f"{prefix}{name}"
@@ -40,11 +40,7 @@ class BaseOption(Generic[T]):
         if self.short_name is not MISSING:
             yield f"-{self.short_name}"
 
-        # TODO: add prefix validation
-        if self.use_prefix and self.prefix:
-            yield f'--{self.prefix.replace("_", "-")}-{self.name.replace("_", "-")}'
-        else:
-            yield f'--{self.name.replace("_", "-")}'
+        yield _to_option_name(self.name, self.prefix)
 
     @property
     def addoption_fields(self) -> Sequence[Field]:
@@ -84,8 +80,8 @@ class Option(BaseOption[T]):
             required = True
 
         # No destination provided, generate default one
-        if dest is MISSING:
-            dest = _default_dest(name, prefix)
+        if dest is MISSING and name is not MISSING:
+            dest = _to_option_dest(name, prefix)
 
         # No action provided, use default for type or "store"
         if action is MISSING:
