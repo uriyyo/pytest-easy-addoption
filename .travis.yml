@@ -5,7 +5,6 @@ install:
 
 env:
   - TEST_CMD="pytest tests"
-    SRC_DIR="pytest_easy_addoption"
 
 script:
   - $TEST_CMD
@@ -15,17 +14,17 @@ matrix:
 #    - name: "flake8"
 #      python: 3.6
 #      env:
-#        - TEST_CMD="flake8 $SRC_DIR"
+#        - TEST_CMD="flake8 pytest_easy_addoption"
 
 #    - name: "mypy"
 #      python: "3.6"
 #      env:
-#        - TEST_CMD="mypy $SRC_DIR"
+#        - TEST_CMD="mypy pytest_easy_addoption"
 
     - name: "codecov"
       python: "3.6"
       env:
-        - TEST_CMD="pytest --cov-report term --cov=$SRC_DIR tests"
+        - TEST_CMD="pytest --cov-report term --cov pytest_easy_addoption tests"
       after_success:
         - curl -s https://codecov.io/bash | bash
 
