@@ -13,21 +13,14 @@ if TYPE_CHECKING:
 
 
 class AddOptionMeta(type):
-    def __new__(
-        mcs, name: str, bases: Tuple[Type, ...], namespace: Dict[str, Any]
-    ) -> Any:
-        prefix: Optional[str] = ChainMap(namespace, *(b.__dict__ for b in bases)).get(
-            "prefix"
-        )
+    def __new__(mcs, name: str, bases: Tuple[Type, ...], namespace: Dict[str, Any]) -> Any:
+        prefix: Optional[str] = ChainMap(namespace, *(b.__dict__ for b in bases)).get("prefix")
 
         for attr, annotation in namespace.get("__annotations__", {}).items():
             if attr not in SKIP_FIELDS:
                 namespace[attr] = field(
                     default=Option.from_decl(
-                        name=attr,
-                        annotation=annotation,
-                        prefix=prefix,
-                        value=namespace.get(attr, MISSING),
+                        name=attr, annotation=annotation, prefix=prefix, value=namespace.get(attr, MISSING),
                     ),
                     init=False,
                 )

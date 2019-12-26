@@ -55,11 +55,7 @@ class BaseOption(Generic[T]):
 
     @property
     def addoption_kwargs(self) -> Mapping[str, Any]:
-        return {
-            f.name: getattr(self, f.name)
-            for f in self.addoption_fields
-            if getattr(self, f.name) is not MISSING
-        }
+        return {f.name: getattr(self, f.name) for f in self.addoption_fields if getattr(self, f.name) is not MISSING}
 
 
 class Option(BaseOption[T]):
@@ -117,11 +113,7 @@ class Option(BaseOption[T]):
 
     @classmethod
     def from_decl(
-        cls: Type[C],
-        name: str,
-        prefix: Optional[str],
-        annotation: TypeOption,
-        value: Union[T, "Option"],
+        cls: Type[C], name: str, prefix: Optional[str], annotation: TypeOption, value: Union[T, "Option"],
     ) -> C:
         if not isinstance(value, Option):
             return cls(default=value, name=name, type=annotation, prefix=prefix)
