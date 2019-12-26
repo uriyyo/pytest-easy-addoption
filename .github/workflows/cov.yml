@@ -24,5 +24,13 @@ jobs:
 
       - name: Coverage
         run: |
-          pytest --cov-report term --cov pytest_easy_addoption tests
-          curl -s https://codecov.io/bash | bash
+          pytest --cov-report xml --cov pytest_easy_addoption tests
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./coverage.xml
+          flags: unittests
+          yml: ./codecov.yml
+          fail_ci_if_error: true
