@@ -1,8 +1,15 @@
 from dataclasses import Field, asdict, dataclass, field, fields
-from typing import Any, Generic, Iterable, Mapping, Optional, Sequence, Type, Union
+from typing import TYPE_CHECKING, Any, Generic, Iterable, Mapping, Optional, Sequence, Type, TypeVar, Union, cast
 
 from .missing import MISSING, Missing
-from .types import C, MappingStrAny, StrOption, T, TypeOption
+from .types import BoolOption, MappingStrAny, StrOption, T, TypeOption
+
+C = TypeVar("C", bound="Option")
+
+
+if TYPE_CHECKING:
+    from _pytest.config import Config
+    from _pytest.config.argparsing import OptionGroup
 
 
 def _to_option_name(name: str, prefix: Optional[str]) -> str:
@@ -40,7 +47,7 @@ class BaseOption(Generic[T]):
         if self.short_name is not MISSING:
             yield f"-{self.short_name}"
 
-        yield _to_option_name(self.name, self.prefix)
+        yield _to_option_name(cast(str, self.name), self.prefix)
 
     @property
     def addoption_fields(self) -> Sequence[Field]:
@@ -66,7 +73,7 @@ class Option(BaseOption[T]):
         dest: StrOption = MISSING,
         help: StrOption = MISSING,
         type: TypeOption = MISSING,
-        required: bool = MISSING,
+        required: BoolOption = MISSING,
         prefix: Optional[str] = None,
         use_prefix: bool = True,
         **kwargs: Any,
@@ -81,32 +88,32 @@ class Option(BaseOption[T]):
 
         # No destination provided, generate default one
         if dest is MISSING and name is not MISSING:
-            dest = _to_option_dest(name, prefix)
+            dest = _to_option_dest(cast(str, name), prefix)
 
         # No action provided, use default for type or "store"
         if action is MISSING:
-            action = TYPE_TO_ACTION.get(type, "store")
+            action = TYPE_TO_ACTION.get(cast("Type", type), "store")
 
         super().__init__(
             default=default,
-            name=name,
-            short_name=short_name,
+            name=cast(Optional[str], name),
+            short_name=cast(Optional[str], short_name),
             action=action,
             dest=dest,
             help=help,
             type=type,
-            required=required,
+            required=cast(bool, required),
             use_prefix=use_prefix,
             prefix=prefix,
             kwargs=kwargs,
         )
 
-    @classmethod
-    def replace(cls, obj: C, **changes) -> C:
+    @staticmethod
+    def replace(obj: C, **changes: Any) -> C:
         data = asdict(obj)
         kwargs = changes.pop("kwargs", data.pop("kwargs"))
 
-        return cls(**{**changes, **data, **kwargs})
+        return type(obj)(**{**changes, **data, **kwargs})
 
     @classmethod
     def from_decl(
@@ -123,12 +130,12 @@ class Option(BaseOption[T]):
         value.name = value.name or name
         value.prefix = value.prefix or prefix
 
-        return cls.replace(value)
+        return cls.replace(cast(C, value))
 
-    def resolve(self, config: Any) -> T:
-        return config.getoption(self.dest)
+    def resolve(self, config: "Config") -> T:
+        return cast(T, config.getoption(self.dest))
 
-    def register(self, group):
+    def register(self, group: "OptionGroup") -> None:
         group.addoption(*self.addoption_names, **self.addoption_kwargs, **self.kwargs)
 
 

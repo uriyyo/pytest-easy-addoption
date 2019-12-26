@@ -1,11 +1,15 @@
 from collections import ChainMap
 from dataclasses import InitVar, dataclass, field, fields
-from typing import Any, ClassVar, Dict, Mapping, Optional, Set, Tuple, Type
+from typing import TYPE_CHECKING, Any, ClassVar, Dict, Mapping, Optional, Set, Tuple, Type
 
 from .missing import MISSING
 from .option import Option
 
 SKIP_FIELDS: Set[str] = {"prefix", "config"}
+
+if TYPE_CHECKING:
+    from _pytest.config import Config
+    from _pytest.config.argparsing import Parser
 
 
 class AddOptionMeta(type):
@@ -35,9 +39,9 @@ class AddOptionMeta(type):
 @dataclass
 class AddOption(metaclass=AddOptionMeta):
     prefix: ClassVar[Optional[str]]
-    config: InitVar[Any]  # Actual type is pytest Config
+    config: InitVar["Config"]  # Actual type is pytest Config
 
-    def __post_init__(self, config):
+    def __post_init__(self, config: "Config") -> None:
         for name, option in self.option_fields().items():
             setattr(self, name, option.resolve(config))
 
@@ -49,7 +53,7 @@ class AddOption(metaclass=AddOptionMeta):
         return {name: cls_fields[name].default for name in names}
 
     @classmethod
-    def register(cls, parser):
+    def register(cls, parser: "Parser") -> None:
         group = parser.getgroup(cls.__name__)
 
         for _, option in cls.option_fields().items():
