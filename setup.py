@@ -6,7 +6,7 @@ from pathlib import Path
 
 __version__ = "0.1.0"
 
-README: Path = Path(__file__).parent / "README.md"
+README: Path = Path(__file__).parent / "README.rst"
 
 test_requirements = [
     "pytest-mock",
