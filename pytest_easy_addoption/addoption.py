@@ -12,6 +12,25 @@ if TYPE_CHECKING:
     from _pytest.config.argparsing import Parser  # pragma: no cover
 
 
+class ConfigHolder:
+    _config: Optional["Config"] = None
+
+    @classmethod
+    def get_config(cls) -> "Config":
+        if cls._config is None:
+            raise ValueError("Try to use not inited config")
+
+        return cls._config
+
+    @classmethod
+    def pytest_configure(cls, config: "Config") -> None:
+        cls._config = config
+
+    @classmethod
+    def pytest_unconfigure(cls) -> None:
+        cls._config = None
+
+
 class AddOptionMeta(type):
     def __new__(mcs, name: str, bases: Tuple[Type, ...], namespace: Dict[str, Any]) -> Any:
         prefix: Optional[str] = ChainMap(namespace, *(b.__dict__ for b in bases)).get("prefix")
@@ -32,9 +51,11 @@ class AddOptionMeta(type):
 @dataclass
 class AddOption(metaclass=AddOptionMeta):
     prefix: ClassVar[Optional[str]]
-    config: InitVar["Config"]
+    config: InitVar["Config"] = None
 
     def __post_init__(self, config: "Config") -> None:
+        config = config or ConfigHolder.get_config()
+
         for name, option in self.option_fields().items():
             setattr(self, name, option.resolve(config))
 
@@ -53,4 +74,4 @@ class AddOption(metaclass=AddOptionMeta):
             option.register(group)
 
 
-__all__ = ["AddOption"]
+__all__ = ["AddOption", "ConfigHolder"]
