@@ -15,6 +15,7 @@ test_requirements = [
 ]
 
 lint_requirements = [
+    "black",
     "mypy",
     "isort",
     "flake8",
