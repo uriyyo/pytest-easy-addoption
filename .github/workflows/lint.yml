@@ -1,4 +1,4 @@
-name: Test
+name: Lint
 
 on: [push, pull_request]
 
@@ -6,9 +6,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
-      fail-fast: false
       matrix:
-        python-version: [3.6, 3.7, 3.8]
+        python-version: [3.6]
 
     steps:
       - uses: actions/checkout@v1
@@ -21,7 +20,17 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install -e ".[dev]"
-      - name: Unit tests
+          python -m pip install --upgrade pre-commit
+          python -m pip install -e '.[dev]'
+
+      - name: black
         run: |
-          pytest tests
+          black --check pytest_easy_addoption
+
+      - name: mypy
+        run: |
+          mypy pytest_easy_addoption
+
+      - name: flake8
+        run: |
+          flake8 pytest_easy_addoption
