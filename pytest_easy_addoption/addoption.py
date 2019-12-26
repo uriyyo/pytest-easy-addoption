@@ -32,7 +32,7 @@ class AddOptionMeta(type):
 @dataclass
 class AddOption(metaclass=AddOptionMeta):
     prefix: ClassVar[Optional[str]]
-    config: InitVar["Config"]  # Actual type is pytest Config
+    config: InitVar["Config"]
 
     def __post_init__(self, config: "Config") -> None:
         for name, option in self.option_fields().items():

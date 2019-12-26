@@ -1,6 +1,7 @@
 from dataclasses import Field, asdict, dataclass, field, fields
 from typing import TYPE_CHECKING, Any, Generic, Iterable, Mapping, Optional, Sequence, Type, TypeVar, Union, cast
 
+from .exceptions import InvalidOptionException
 from .missing import MISSING, Missing
 from .types import BoolOption, MappingStrAny, StrOption, T, TypeOption
 
@@ -13,7 +14,7 @@ if TYPE_CHECKING:
 
 
 def _to_option_name(name: str, prefix: Optional[str]) -> str:
-    prefix = "--" if prefix is None else f"--{prefix.replace('_', '-')}-"
+    prefix = "--" if prefix is None else f"--{prefix}-"
 
     return f"{prefix}{name}".replace("_", "-")
 
@@ -47,7 +48,8 @@ class BaseOption(Generic[T]):
         if self.short_name is not MISSING:
             yield f"-{self.short_name}"
 
-        yield _to_option_name(cast(str, self.name), self.prefix)
+        if self.name is not MISSING:
+            yield _to_option_name(cast(str, self.name), self.prefix)
 
     @property
     def addoption_fields(self) -> Sequence[Field]:
@@ -124,10 +126,17 @@ class Option(BaseOption[T]):
 
         return cls.replace(cast(C, value))
 
+    def check_ready(self) -> None:
+        # No name or short name provided
+        if self.name is MISSING and self.short_name is MISSING:
+            raise InvalidOptionException()
+
     def resolve(self, config: "Config") -> T:
         return cast(T, config.getoption(self.dest))
 
     def register(self, group: "OptionGroup") -> None:
+        self.check_ready()
+
         group.addoption(*self.addoption_names, **self.addoption_kwargs, **self.kwargs)
 
 
