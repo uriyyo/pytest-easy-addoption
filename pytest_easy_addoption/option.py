@@ -9,8 +9,8 @@ C = TypeVar("C", bound="Option")
 
 
 if TYPE_CHECKING:
-    from _pytest.config import Config
-    from _pytest.config.argparsing import OptionGroup
+    from _pytest.config import Config  # pragma: no cover
+    from _pytest.config.argparsing import OptionGroup  # pragma: no cover
 
 
 def _to_option_name(name: str, prefix: Optional[str]) -> str:
@@ -77,12 +77,12 @@ class Option(BaseOption[T]):
         **kwargs: Any,
     ):
         # Option isn't required, but no default value provided
-        if default is MISSING and required is not MISSING and not required:
+        if default is MISSING and required is not MISSING and required:
             raise ValueError("No default value provided")
 
-        # Default value set and no required pass, assume that this option required
-        if default is not MISSING and required is MISSING:
-            required = True
+        # Required not set, try to calculate value depend on default
+        if required is MISSING:
+            required = default is MISSING
 
         # No destination provided, generate default one
         if dest is MISSING and name is not MISSING:
@@ -111,7 +111,7 @@ class Option(BaseOption[T]):
         data = asdict(obj)
         kwargs = changes.pop("kwargs", data.pop("kwargs"))
 
-        return type(obj)(**{**changes, **data, **kwargs})
+        return type(obj)(**{**data, **changes, **kwargs})
 
     @classmethod
     def from_decl(
@@ -129,6 +129,10 @@ class Option(BaseOption[T]):
     def check_ready(self) -> None:
         # No name or short name provided
         if self.name is MISSING and self.short_name is MISSING:
+            raise InvalidOptionException()
+
+        # No name and dest
+        if self.name is MISSING and self.dest is MISSING:
             raise InvalidOptionException()
 
     def resolve(self, config: "Config") -> T:

@@ -8,8 +8,8 @@ from .option import Option
 SKIP_FIELDS: Set[str] = {"prefix", "config"}
 
 if TYPE_CHECKING:
-    from _pytest.config import Config
-    from _pytest.config.argparsing import Parser
+    from _pytest.config import Config  # pragma: no cover
+    from _pytest.config.argparsing import Parser  # pragma: no cover
 
 
 class AddOptionMeta(type):
