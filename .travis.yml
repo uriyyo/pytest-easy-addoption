@@ -11,15 +11,20 @@ script:
 
 matrix:
   include:
-#    - name: "flake8"
-#      python: 3.6
-#      env:
-#        - TEST_CMD="flake8 pytest_easy_addoption"
+    - name: "black"
+      python: "3.6"
+      env:
+        - TEST_CMD="black --check pytest_easy_addoption"
 
-#    - name: "mypy"
-#      python: "3.6"
-#      env:
-#        - TEST_CMD="mypy pytest_easy_addoption"
+    - name: "flake8"
+      python: "3.6"
+      env:
+        - TEST_CMD="flake8 pytest_easy_addoption"
+
+    - name: "mypy"
+      python: "3.6"
+      env:
+        - TEST_CMD="mypy pytest_easy_addoption"
 
     - name: "codecov"
       python: "3.6"
