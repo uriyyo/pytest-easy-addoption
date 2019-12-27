@@ -1,7 +1,7 @@
 from pytest import mark, raises
 
-from pytest_easy_addoption import Option
-from pytest_easy_addoption.exceptions import InvalidOptionException
+from easy_addoption import Option
+from easy_addoption.exceptions import InvalidOptionException
 
 
 @mark.parametrize(

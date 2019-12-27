@@ -2,6 +2,8 @@ from collections import ChainMap
 from dataclasses import InitVar, dataclass, field, fields
 from typing import TYPE_CHECKING, Any, ClassVar, Dict, Mapping, Optional, Set, Tuple, Type
 
+from _pytest_easy_addoption import ConfigHolder
+
 from .missing import MISSING
 from .option import Option
 
@@ -32,9 +34,11 @@ class AddOptionMeta(type):
 @dataclass
 class AddOption(metaclass=AddOptionMeta):
     prefix: ClassVar[Optional[str]]
-    config: InitVar["Config"]
+    config: InitVar["Config"] = None
 
     def __post_init__(self, config: "Config") -> None:
+        config = config or ConfigHolder.get_config()
+
         for name, option in self.option_fields().items():
             setattr(self, name, option.resolve(config))
 

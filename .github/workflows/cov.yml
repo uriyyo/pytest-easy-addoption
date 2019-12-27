@@ -24,7 +24,7 @@ jobs:
 
       - name: Coverage
         run: |
-          pytest --cov-report xml --cov pytest_easy_addoption tests
+          pytest --cov-report xml --cov easy_addoption tests
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
