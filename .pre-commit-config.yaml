@@ -14,7 +14,7 @@ repos:
 
       - id: black
         name: Check pytest unit tests pass
-        entry: black --check pytest_easy_addoption tests
+        entry: black --check _pytest_easy_addoption easy_addoption tests
         language: system
         types: [python]
         always_run: true
@@ -23,7 +23,7 @@ repos:
 
       - id: mypy
         name: Check mypy static types match
-        entry: mypy pytest_easy_addoption
+        entry: mypy _pytest_easy_addoption easy_addoption
         language: system
         types: [python]
         always_run: true
@@ -32,7 +32,7 @@ repos:
 
       - id: flake8
         name: Check flake8 rules match
-        entry: flake8 pytest_easy_addoption tests
+        entry: flake8 _pytest_easy_addoption easy_addoption tests
         language: system
         types: [python]
         always_run: true

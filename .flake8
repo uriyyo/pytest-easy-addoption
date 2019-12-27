@@ -1,5 +1,5 @@
 [flake8]
-ignore = D, W293, I001
+ignore = D, W293, I001, I004
 max-line-length = 120
 show-source = true
 enable-extensions = G
