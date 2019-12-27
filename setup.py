@@ -41,6 +41,7 @@ setup(
         "lint": lint_requirements,
         "dev": [*test_requirements, *lint_requirements, "pre-commit"],
     },
+    entry_points={"pytest11": ["pytest-easy-addoption = _pytest_easy_addoption.plugin"]},
     classifiers=[
         "License :: MIT License",
         "Operating System :: POSIX",

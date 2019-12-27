@@ -16,7 +16,7 @@ def test_file(testdir):
 def test_explicit_option(testdir):
     testdir.makeconftest(
         """
-        from pytest_easy_addoption import AddOption, Option
+        from easy_addoption import AddOption, Option
 
         class FooAddOption(AddOption):
             foo: str = Option('foo')
@@ -33,7 +33,7 @@ def test_explicit_option(testdir):
 def test_implicit_option(testdir):
     testdir.makeconftest(
         """
-        from pytest_easy_addoption import AddOption
+        from easy_addoption import AddOption
 
         class FooAddOption(AddOption):
             foo: str
@@ -50,7 +50,7 @@ def test_implicit_option(testdir):
 def test_option_default_value_missed(testdir):
     testdir.makeconftest(
         """
-        from pytest_easy_addoption import AddOption
+        from easy_addoption import AddOption
 
         class FooAddOption(AddOption):
             foo: str
