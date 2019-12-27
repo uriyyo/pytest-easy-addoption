@@ -1,6 +1,6 @@
 from dataclasses import is_dataclass
 
-from pytest_easy_addoption import AddOption
+from easy_addoption import AddOption
 
 
 def test_addoption_is_dataclass():
