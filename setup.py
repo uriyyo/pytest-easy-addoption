@@ -1,8 +1,6 @@
-from setuptools import (
-    setup,
-    find_packages,
-)
 from pathlib import Path
+
+from setuptools import find_packages, setup
 
 __version__ = "0.1.0"
 
