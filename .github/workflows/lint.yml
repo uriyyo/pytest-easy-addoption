@@ -25,12 +25,12 @@ jobs:
 
       - name: black
         run: |
-          black --check _pytest_easy_addoption easy_addoption tests
+          black --check _pytest_easy_addoption easy_addoption _mypy_easy_addoption_plugin tests
 
       - name: mypy
         run: |
-          mypy _pytest_easy_addoption easy_addoption
+          mypy _pytest_easy_addoption easy_addoption _mypy_easy_addoption_plugin
 
       - name: flake8
         run: |
-          flake8 _pytest_easy_addoption easy_addoption tests
+          flake8 _pytest_easy_addoption easy_addoption _mypy_easy_addoption_plugin tests
