@@ -1,4 +1,4 @@
-from pytest_easy_addoption.missing import MISSING
+from easy_addoption.missing import MISSING
 
 
 def test_missing_bool():

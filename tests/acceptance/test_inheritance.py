@@ -1,7 +1,7 @@
 def test_inheritance(testdir):
     testdir.makeconftest(
         """
-        from pytest_easy_addoption import AddOption
+        from easy_addoption import AddOption
 
         class BarAddOption(AddOption):
             bar: str
