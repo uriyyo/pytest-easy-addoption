@@ -12,9 +12,11 @@
     </p>
 
 
-``Pytest-easy-addoption`` Easy way to work with pytest addoption
+``pytest-easy-addoption`` pytest addoption but with power of type annotations and dataclasses.
 
-An example of a usage:
+More documentation `here <https://github.com/uriyyo/pytest-easy-addoption/blob/develop/doc/en/>`_.
+
+An quick example of a usage:
 
 .. code-block:: python
 
@@ -32,7 +34,7 @@ An example of a usage:
     from .conftest import FooBarAddOption
 
     def test_example(request):
-        print(FooBarAddOption(request.config))
+        print(FooBarAddOption())
 
 ::
 
