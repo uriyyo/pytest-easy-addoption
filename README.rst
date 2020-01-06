@@ -14,7 +14,7 @@
 
 ``pytest-easy-addoption`` pytest addoption but with power of type annotations and dataclasses.
 
-More documentation `here <https://github.com/uriyyo/pytest-easy-addoption/blob/develop/doc/en/>`_.
+More documentation `here <https://github.com/uriyyo/pytest-easy-addoption/blob/develop/doc/en.rst>`_.
 
 An quick example of a usage:
 
