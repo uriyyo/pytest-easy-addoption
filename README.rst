@@ -38,7 +38,7 @@ An quick example of a usage:
 
 ::
 
-    $ pytest --foo="BAR"
+    $ pytest --foo="FOO"
     ============================= test session starts =============================
     collected 1 items
 
