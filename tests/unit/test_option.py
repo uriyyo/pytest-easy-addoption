@@ -33,7 +33,7 @@ def test_addoption_fields():
     "kwargs,expected",
     [
         ({"default": None}, {"default": None, "action": "store", "required": False}),
-        ({"default": None, "type": bool}, {"default": None, "action": "store_true", "required": False, "type": bool}),
+        ({"default": None, "type": bool}, {"default": None, "action": "store_true", "required": False}),
         ({"default": None, "name": "name"}, {"default": None, "action": "store", "required": False, "dest": "name"},),
         ({"required": False, "dest": "my_dest"}, {"action": "store", "required": False, "dest": "my_dest"}),
         (
