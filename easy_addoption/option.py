@@ -1,4 +1,5 @@
 from dataclasses import Field, asdict, dataclass, field, fields
+from functools import partial
 from typing import TYPE_CHECKING, Any, Generic, Iterable, Mapping, Optional, Sequence, Type, TypeVar, Union, cast
 
 from .exceptions import InvalidOptionException
@@ -6,7 +7,6 @@ from .missing import MISSING, Missing
 from .types import BoolOption, MappingStrAny, StrOption, T, TypeOption
 
 C = TypeVar("C", bound="Option")
-
 
 if TYPE_CHECKING:
     from _pytest.config import Config  # pragma: no cover
@@ -57,7 +57,12 @@ class BaseOption(Generic[T]):
 
     @property
     def addoption_kwargs(self) -> Mapping[str, Any]:
-        return {f.name: getattr(self, f.name) for f in self.addoption_fields if getattr(self, f.name) is not MISSING}
+        kwargs = {f.name: getattr(self, f.name) for f in self.addoption_fields if getattr(self, f.name) is not MISSING}
+
+        if self.action != "store" and "type" in kwargs:
+            del kwargs["type"]
+
+        return kwargs
 
 
 class Option(BaseOption[T]):
@@ -144,4 +149,7 @@ class Option(BaseOption[T]):
         group.addoption(*self.addoption_names, **self.addoption_kwargs, **self.kwargs)
 
 
-__all__ = ["Option"]
+Append = partial(Option, required=False, action="append")
+Count = partial(Option, required=False, action="count")
+
+__all__ = ["Append", "Count", "Option"]
