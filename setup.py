@@ -24,11 +24,11 @@ lint_requirements = [
 
 setup(
     name="pytest-easy-addoption",
-    version="0.1.0",
+    version="0.1.1",
     python_requires=">=3.6",
     author="Yurii Karabas",
     author_email="1998uriyyo@gmail.com",
-    url="https://github.com/uriyyo/instapi",
+    url="https://github.com/uriyyo/pytest-easy-addoption",
     description="pytest-easy-addoption: Easy way to work with pytest addoption",
     long_description=README.read_text(),
     license="MIT",
@@ -41,7 +41,7 @@ setup(
     },
     entry_points={"pytest11": ["pytest-easy-addoption = _pytest_easy_addoption.plugin"]},
     classifiers=[
-        "License :: MIT License",
+        "License :: OSI Approved :: MIT License",
         "Operating System :: POSIX",
         "Operating System :: Microsoft :: Windows",
         "Operating System :: MacOS :: MacOS X",
