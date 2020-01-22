@@ -7,7 +7,6 @@ from .types import BoolOption, MappingStrAny, StrOption, T, TypeOption
 
 C = TypeVar("C", bound="Option")
 
-
 if TYPE_CHECKING:
     from _pytest.config import Config  # pragma: no cover
     from _pytest.config.argparsing import OptionGroup  # pragma: no cover
@@ -26,15 +25,16 @@ def _to_option_dest(name: str, prefix: Optional[str] = None) -> str:
 
 
 TYPE_TO_ACTION: Mapping[Type, str] = {bool: "store_true"}
+SKIPPED: Mapping[str, bool] = {"skip": True}
 
 
 @dataclass
 class BaseOption(Generic[T]):
-    name: Optional[str] = field(metadata={"skip": True})
-    short_name: Optional[str] = field(metadata={"skip": True})
-    prefix: Optional[str] = field(metadata={"skip": True})
-    use_prefix: bool = field(metadata={"skip": True})
-    kwargs: MappingStrAny = field(metadata={"skip": True})
+    name: Optional[str] = field(metadata=SKIPPED)
+    short_name: Optional[str] = field(metadata=SKIPPED)
+    prefix: Optional[str] = field(metadata=SKIPPED)
+    use_prefix: bool = field(metadata=SKIPPED)
+    kwargs: MappingStrAny = field(metadata=SKIPPED)
 
     default: Optional[Union[T, Missing]]
     action: StrOption
