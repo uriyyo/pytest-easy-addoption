@@ -32,7 +32,7 @@ setup(
     description="pytest-easy-addoption: Easy way to work with pytest addoption",
     long_description=README.read_text(),
     license="MIT",
-    packages=find_packages(exclude=("tests*",)),
+    packages=find_packages(exclude=("tests*", 'examples*')),
     install_requires=["dataclasses>=0.6", "pytest>=5.0"],
     extras_require={
         "test": test_requirements,
