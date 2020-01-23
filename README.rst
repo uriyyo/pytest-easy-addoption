@@ -16,6 +16,12 @@
 
 More documentation `here <https://github.com/uriyyo/pytest-easy-addoption/blob/develop/doc/en.rst>`_.
 
+To install ``pytest-easy-addoption`` simply:
+
+.. code-block:: bash
+
+    $ pip install pytest-easy-addoption
+
 An quick example of a usage:
 
 .. code-block:: python
